@@ -3,23 +3,10 @@
 namespace FOS\MessageBundle\Document;
 
 use FOS\MessageBundle\Model\Thread as AbstractThread;
-use FOS\MessageBundle\Model\MessageInterface;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use FOS\MessageBundle\Model\ParticipantInterface;
 
 abstract class Thread extends AbstractThread
 {
-    /**
-     * Date that the last message in this thread was created at
-     *
-     * This denormalization field is used for sorting threads in the inbox and
-     * sent list.
-     *
-     * @var DateTime
-     */
-    protected $lastMessageDate;
-
     /**
      * All text contained in the thread messages
      * Used for the full text search

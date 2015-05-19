@@ -105,8 +105,8 @@ class ThreadManager extends BaseThreadManager
             // there is at least one message written by an other participant
             ->andWhere('tm.lastMessageDate IS NOT NULL')
 
-            // sort by date of last message written by an other participant
-            ->orderBy('tm.lastMessageDate', 'DESC')
+            // sort by date of last message written by this participant TODO: change
+            ->orderBy('t.lastMessageDate', 'DESC')
         ;
     }
 
@@ -338,6 +338,7 @@ class ThreadManager extends BaseThreadManager
         $this->doMetadata($thread);
         $this->doCreatedByAndAt($thread);
         $this->doDatesOfLastMessageWrittenByOtherParticipant($thread);
+        // TODO: add lastMessageAt
     }
 
     /**
@@ -405,6 +406,7 @@ class ThreadManager extends BaseThreadManager
                 $date = new \DateTime();
                 $date->setTimestamp($timestamp);
                 $meta->setLastMessageDate($date);
+                $thread->setLastMessageDate($date);
             }
         }
     }

@@ -4,14 +4,14 @@ namespace FOS\MessageBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use FOS\MessageBundle\Model\MessageInterface;
-use FOS\MessageBundle\Model\Thread as BaseThread;
+use FOS\MessageBundle\Model\Thread as AbstractThread;
 use FOS\MessageBundle\Model\ParticipantInterface;
 
 use FOS\MessageBundle\Model\ThreadMetadata as ModelThreadMetadata;
 
-abstract class Thread extends BaseThread
+abstract class Thread extends AbstractThread
 {
+
     /**
      * Messages contained in this thread
      *
@@ -150,4 +150,28 @@ abstract class Thread extends BaseThread
         $meta->setThread($this);
         parent::addMetadata($meta);
     }
+
+    /**
+     * Ensures that metadata last message dates are up to date
+     *
+     * Precondition: metadata exists for all thread participants
+     */
+    protected function doMetadataLastMessageDates()
+    {
+        foreach ($this->metadata as $meta) {
+            foreach ($this->getMessages() as $message) {
+                if ($meta->getParticipant()->getId() !== $message->getSender()->getId()) {
+                    if (null === $meta->getLastMessageDate() || $meta->getLastMessageDate()->getTimestamp() < $message->getTimestamp()) {
+                        $meta->setLastMessageDate($message->getCreatedAt());
+                        $this->lastMessageDate = $message->getCreatedAt();
+                    }
+                } else {
+                    if (null === $meta->getLastParticipantMessageDate() || $meta->getLastParticipantMessageDate()->getTimestamp() < $message->getTimestamp()) {
+                        $meta->setLastParticipantMessageDate($message->getCreatedAt());
+                    }
+                }
+            }
+        }
+    }
+
 }

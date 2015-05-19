@@ -8,6 +8,8 @@
 
         <field name="subject" column="subject" type="string" />
 
+        <field name="lastMessageDate" fieldName="lastMessageDate" type="date" />
+
         <field name="createdAt" fieldName="createdAt" type="datetime" />
 
         <field name="isSpam" fieldName="isSpam" type="boolean" />

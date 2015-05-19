@@ -70,6 +70,16 @@ abstract class Thread implements ThreadInterface
     protected $createdBy;
 
     /**
+     * Date that the last message in this thread was created at
+     *
+     * This denormalization field is used for sorting threads in the inbox and
+     * sent list.
+     *
+     * @var DateTime
+     */
+    protected $lastMessageDate;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -291,5 +301,21 @@ abstract class Thread implements ThreadInterface
 
         // we want to reset the array indexes
         return array_values($otherParticipants);
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getLastMessageDate()
+    {
+        return $this->lastMessageDate;
+    }
+
+    /**
+     * @param DateTime $lastMessageDate
+     */
+    public function setLastMessageDate($lastMessageDate)
+    {
+        $this->lastMessageDate = $lastMessageDate;
     }
 }

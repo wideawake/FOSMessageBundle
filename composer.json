@@ -25,7 +25,8 @@
     },
     "suggest": {
         "doctrine/doctrine-bundle": "dev-master",
-        "doctrine/mongodb-odm-bundle": "dev-master"
+        "doctrine/mongodb-odm-bundle": "dev-master",
+        "knplabs/knp-paginator-bundle": "^2.4"
     },
     "autoload": {
         "psr-0": { "FOS\\MessageBundle": "" }

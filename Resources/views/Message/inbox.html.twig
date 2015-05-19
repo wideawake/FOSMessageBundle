@@ -4,8 +4,17 @@
 
 <h2>{% trans from 'FOSMessageBundle' %}inbox{% endtrans %}</h2>
 
+
 <a href="{{ url('fos_message_thread_new' )}}">{% trans from 'FOSMessageBundle' %}send_new{% endtrans %}</a>
 
 {% include 'FOSMessageBundle:Message:threads_list.html.twig' with {'threads': threads} %}
+
+{% if paginate %}
+    <div class="navigation">
+        {% if paginate and threads is not null %}
+            {{ knp_pagination_render(threads) }}
+        {% endif %}
+    </div>
+{% endif %}
 
 {% endblock %}

@@ -32,6 +32,10 @@ class FOSMessageExtension extends Extension
         $container->setParameter('fos_message.message_class', $config['message_class']);
         $container->setParameter('fos_message.thread_class', $config['thread_class']);
 
+        // pagination
+        $container->setParameter('fos_message.pagination.enabled', $config['pagination']['enabled']);
+        $container->setParameter('fos_message.pagination.messages_per_page', $config['pagination']['messages_per_page']);
+
         $container->setParameter('fos_message.new_thread_form.model', $config['new_thread_form']['model']);
         $container->setParameter('fos_message.new_thread_form.name', $config['new_thread_form']['name']);
         $container->setParameter('fos_message.reply_form.model', $config['reply_form']['model']);

@@ -2,6 +2,7 @@
 
 namespace FOS\MessageBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,14 +13,27 @@ class MessageController extends ContainerAware
     /**
      * Displays the authenticated participant inbox
      *
+     * @param Request $request
      * @return Response
      */
-    public function inboxAction()
+    public function inboxAction(Request $request)
     {
-        $threads = $this->getProvider()->getInboxThreads();
+        $paginate = $this->container->getParameter('fos_message.pagination.enabled');
+        if ($paginate) {
+            $threads = $this->container->get('knp_paginator')->paginate(
+                $this->container->get('fos_message.thread_manager')->getParticipantInboxThreadsQueryBuilder(
+                    $this->container->get('fos_message.participant_provider')->getAuthenticatedParticipant()
+                )->getQuery(),
+                $request->query->get('page', 1),
+                $this->container->getParameter('fos_message.pagination.messages_per_page')
+            );
+        } else {
+            $threads = $this->getProvider()->getInboxThreads();
+        }
 
         return $this->container->get('templating')->renderResponse('FOSMessageBundle:Message:inbox.html.twig', array(
-            'threads' => $threads
+            'threads'   =>  $threads,
+            'paginate'  =>  $paginate
         ));
     }
 
