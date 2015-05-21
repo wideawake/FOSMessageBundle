@@ -8,7 +8,7 @@
 
         <field name="subject" column="subject" type="string" />
 
-        <field name="lastMessageDate" fieldName="lastMessageDate" type="date" />
+        <field name="lastMessageDate" fieldName="lastMessageDate" type="datetime" />
 
         <field name="createdAt" fieldName="createdAt" type="datetime" />
 
