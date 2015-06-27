@@ -20,3 +20,5 @@ goto_last:      Vedere l’ultimo messaggio
 on:             Il %date%
 by:             Di %sender%
 no_thread:      Nessuna conversazione
+
+body: Messaggio
