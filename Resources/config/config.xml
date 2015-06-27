@@ -55,6 +55,7 @@
             <argument type="service" id="fos_message.participant_provider" />
             <argument type="service" id="fos_message.provider" />
             <argument type="service" id="fos_message.authorizer" />
+            <argument>%fos_message.allow_permanent_messages_delete.allow%</argument>
             <tag name="twig.extension" alias="fos_message" />
         </service>
 

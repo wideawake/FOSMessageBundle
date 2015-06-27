@@ -36,6 +36,10 @@ class FOSMessageExtension extends Extension
         $container->setParameter('fos_message.pagination.enabled', $config['pagination']['enabled']);
         $container->setParameter('fos_message.pagination.messages_per_page', $config['pagination']['messages_per_page']);
 
+        // allow persistent messages delete
+        $container->setParameter('fos_message.allow_permanent_messages_delete.allow',
+            $config['allow_permanent_messages_delete']['allow']);
+
         $container->setParameter('fos_message.new_thread_form.model', $config['new_thread_form']['model']);
         $container->setParameter('fos_message.new_thread_form.name', $config['new_thread_form']['name']);
         $container->setParameter('fos_message.reply_form.model', $config['reply_form']['model']);

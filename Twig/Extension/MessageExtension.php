@@ -13,14 +13,20 @@ class MessageExtension extends \Twig_Extension
     protected $participantProvider;
     protected $provider;
     protected $authorizer;
+    protected $allowPersistentMessageDelete;
 
     protected $nbUnreadMessagesCache;
 
-    public function __construct(ParticipantProviderInterface $participantProvider, ProviderInterface $provider, AuthorizerInterface $authorizer)
+    public function __construct(
+        ParticipantProviderInterface $participantProvider,
+        ProviderInterface $provider,
+        AuthorizerInterface $authorizer,
+        $allowPersistentMessageDelete)
     {
         $this->participantProvider = $participantProvider;
         $this->provider = $provider;
         $this->authorizer = $authorizer;
+        $this->allowPersistentMessageDelete = $allowPersistentMessageDelete;
     }
 
     /**
@@ -34,7 +40,8 @@ class MessageExtension extends \Twig_Extension
             'fos_message_is_read'  => new \Twig_Function_Method($this, 'isRead'),
             'fos_message_nb_unread' => new \Twig_Function_Method($this, 'getNbUnread'),
             'fos_message_can_delete_thread' => new \Twig_Function_Method($this, 'canDeleteThread'),
-            'fos_message_deleted_by_participant' => new \Twig_Function_Method($this, 'isThreadDeletedByParticipant')
+            'fos_message_deleted_by_participant' => new \Twig_Function_Method($this, 'isThreadDeletedByParticipant'),
+            'fos_message_persistent_delete'     =>  new \Twig_Function_Method($this, 'isPersistentDeleteAllowed')
         );
     }
 
@@ -95,6 +102,11 @@ class MessageExtension extends \Twig_Extension
     protected function getAuthenticatedParticipant()
     {
         return $this->participantProvider->getAuthenticatedParticipant();
+    }
+
+    public function isPersistentDeleteAllowed()
+    {
+        return $this->allowPersistentMessageDelete;
     }
 
     /**
