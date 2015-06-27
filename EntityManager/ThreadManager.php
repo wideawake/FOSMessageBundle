@@ -157,7 +157,7 @@ class ThreadManager extends BaseThreadManager
             ->andWhere('tm.lastParticipantMessageDate IS NOT NULL')
 
             // sort by date of last message written by this participant
-            ->orderBy('tm.lastParticipantMessageDate', 'DESC')
+            ->orderBy('t.lastMessageDate', 'DESC')
         ;
     }
 
@@ -195,7 +195,7 @@ class ThreadManager extends BaseThreadManager
             ->setParameter('isDeleted', true, \PDO::PARAM_BOOL)
 
             // sort by date of last message
-            ->orderBy('tm.lastMessageDate', 'DESC')
+            ->orderBy('t.lastMessageDate', 'DESC')
         ;
     }
 

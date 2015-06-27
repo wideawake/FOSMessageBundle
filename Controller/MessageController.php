@@ -42,12 +42,23 @@ class MessageController extends ContainerAware
      *
      * @return Response
      */
-    public function sentAction()
+    public function sentAction(Request $request)
     {
-        $threads = $this->getProvider()->getSentThreads();
-
+        $paginate = $this->container->getParameter('fos_message.pagination.enabled');
+        if ($paginate) {
+            $threads = $this->container->get('knp_paginator')->paginate(
+                $this->container->get('fos_message.thread_manager')->getParticipantSentThreadsQueryBuilder(
+                    $this->container->get('fos_message.participant_provider')->getAuthenticatedParticipant()
+                )->getQuery(),
+                $request->query->get('page', 1),
+                $this->container->getParameter('fos_message.pagination.messages_per_page')
+            );
+        } else {
+            $threads = $this->getProvider()->getSentThreads();
+        }
         return $this->container->get('templating')->renderResponse('FOSMessageBundle:Message:sent.html.twig', array(
-            'threads' => $threads
+            'threads' => $threads,
+            'paginate'  =>  $paginate
         ));
     }
 
@@ -56,12 +67,24 @@ class MessageController extends ContainerAware
      *
      * @return Response
      */
-    public function deletedAction()
+    public function deletedAction(Request $request)
     {
-        $threads = $this->getProvider()->getDeletedThreads();
+        $paginate = $this->container->getParameter('fos_message.pagination.enabled');
+        if ($paginate) {
+            $threads = $this->container->get('knp_paginator')->paginate(
+                $this->container->get('fos_message.thread_manager')->getParticipantDeletedThreadsQueryBuilder(
+                    $this->container->get('fos_message.participant_provider')->getAuthenticatedParticipant()
+                )->getQuery(),
+                $request->query->get('page', 1),
+                $this->container->getParameter('fos_message.pagination.messages_per_page')
+            );
+        } else {
+            $threads = $this->getProvider()->getDeletedThreads();
+        }
 
         return $this->container->get('templating')->renderResponse('FOSMessageBundle:Message:deleted.html.twig', array(
-            'threads' => $threads
+            'threads' => $threads,
+            'paginate' => $paginate
         ));
     }
 
