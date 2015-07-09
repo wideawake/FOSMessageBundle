@@ -47,7 +47,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if fos_message_can_delete_thread(thread) %}
+                    {% set allowDelete = fos_message_persistent_delete() %}
+                    {% if fos_message_can_delete_thread(thread) and (allowDelete is not defined or allowDelete) %}
                         {% if fos_message_deleted_by_participant(thread) %}
                             {% set formAction %}{{ url('fos_message_thread_undelete', {'threadId': thread.id}) }}{% endset %}
                             {% set submitValue %}{% trans from 'FOSMessageBundle' %}undelete{% endtrans %}{% endset %}
